@@ -1,0 +1,55 @@
+name: Deploy
+on:
+  workflow_dispatch:
+    inputs: { }
+  push:
+    branches:
+      - main
+env:
+  SPRING_APPS_SERVICE: ${{ secrets.SPRING_APPS_SERVICE }}
+  RESOURCE_GROUP: ${{ secrets.RESOURCE_GROUP }}
+  KEY_VAULT: ${{ secrets.KEY_VAULT }}
+  GUIDES_RENDERER_APP: guides-renderer
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'adopt'
+      - name: Validate Gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+      - name: Build with Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: build
+          build-root-directory: .
+      - name: Set up Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      - name: Set up Azure Spring Extension
+        run: az extension add --name spring
+      - name: Create app
+        run: |
+          az spring app create \
+          --name ${GUIDES_RENDERER_APP} \
+          --resource-group "$RESOURCE_GROUP" \
+          --instance-count 2 \
+          --service "$SPRING_APPS_SERVICE"
+        continue-on-error: true
+      - name: Deploy
+        run: |
+          keyvault_uri=$(az keyvault show \
+           --resource-group ${RESOURCE_GROUP} \
+           --name ${KEY_VAULT} | jq -r '.properties.vaultUri')
+          az spring app deploy \
+            --name ${GUIDES_RENDERER_APP} \
+            --resource-group "$RESOURCE_GROUP" \
+            --service "$SPRING_APPS_SERVICE" \
+            --env "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_ENDPOINT=${keyvault_uri}" "SPRING_CLOUD_AZURE_KEYVAULT_SECRET_PROPERTY_SOURCES_0_NAME=${KEY_VAULT}"\
+            --source-path ./

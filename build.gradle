@@ -1,0 +1,60 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.35")
+	}
+}
+
+plugins {
+	id 'org.springframework.boot' version '2.7.5'
+	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'java'
+}
+
+apply plugin: 'io.spring.javaformat'
+
+group = 'io.spring.sagan'
+version = "1.0.0-SNAPSHOT"
+sourceCompatibility = 11
+targetCompatibility = 11
+
+repositories {
+	mavenCentral()
+}
+
+bootJar {
+	requiresUnpack '**/jruby-complete-*.jar'
+	requiresUnpack '**/asciidoctorj-*.jar'
+}
+
+dependencies {
+	implementation 'org.pegdown:pegdown:1.6.0'
+	implementation('org.asciidoctor:asciidoctorj:2.5.2') {
+		exclude group: 'org.jruby'
+	}
+	implementation 'org.jruby:jruby-complete:9.3.1.0'
+	implementation 'org.jsoup:jsoup:1.14.3'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'com.azure.spring:spring-cloud-azure-starter-keyvault-secrets'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.security:spring-security-test'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "com.azure.spring:spring-cloud-azure-dependencies:4.5.0"
+	}
+}
+
+test {
+	useJUnitPlatform()
+}
+
