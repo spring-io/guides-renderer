@@ -25,10 +25,11 @@ import io.spring.renderer.guides.GuideContentModel;
 import io.spring.renderer.guides.GuideRenderingException;
 import org.asciidoctor.Asciidoctor;
 import org.asciidoctor.Attributes;
-import org.asciidoctor.OptionsBuilder;
+import org.asciidoctor.Options;
 import org.asciidoctor.SafeMode;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import org.springframework.stereotype.Component;
@@ -51,12 +52,10 @@ public class AsciidoctorGuideContentContributor implements GuideContentContribut
 	@Override
 	public void contribute(GuideContentModel guideContent, File repositoryRoot) {
 		try {
-			Attributes attributes = new Attributes();
-			attributes.setAllowUriRead(true);
-			attributes.setSkipFrontMatter(true);
+			Attributes attributes = Attributes.builder().allowUriRead(true).skipFrontMatter(true).build();
 			File readmeAdocFile = new File(repositoryRoot.getAbsolutePath() + File.separator + README_FILENAME);
-			OptionsBuilder options = OptionsBuilder.options().safe(SafeMode.SAFE).baseDir(repositoryRoot)
-					.headerFooter(true).attributes(attributes);
+			Options options = Options.builder().safe(SafeMode.SAFE).baseDir(repositoryRoot).headerFooter(true)
+					.attributes(attributes).build();
 			StringWriter writer = new StringWriter();
 			this.asciidoctor.convert(new FileReader(readmeAdocFile), writer, options);
 			Document doc = Jsoup.parse(writer.toString());
@@ -75,7 +74,7 @@ public class AsciidoctorGuideContentContributor implements GuideContentContribut
 	 */
 	private String findTableOfContents(Document doc) {
 		Elements toc = doc.select("div#toc > ul.sectlevel1");
-		toc.select("ul.sectlevel2").forEach(subsection -> subsection.remove());
+		toc.select("ul.sectlevel2").forEach(Node::remove);
 		toc.forEach(part -> part
 				.select("a[href]").stream().filter(anchor -> doc.select(anchor.attr("href")).get(0).parent()
 						.classNames().stream().anyMatch(clazz -> clazz.startsWith("reveal")))
