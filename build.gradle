@@ -15,7 +15,7 @@ plugins {
 
 apply plugin: 'io.spring.javaformat'
 
-group = 'io.spring.sagan'
+group = 'io.spring.renderer'
 version = "1.0.0-SNAPSHOT"
 sourceCompatibility = 11
 targetCompatibility = 11

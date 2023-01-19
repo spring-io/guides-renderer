@@ -1,6 +1,3 @@
-server:
-  port: 8081
-
 renderer:
   github:
     organization: spring-guides
@@ -12,10 +9,3 @@ renderer:
     # locally, this lower default is fine. When running the app in production, the
     # token is a must. See http://developer.github.com/v3/#rate-limiting.
     token:
-
-management:
-  endpoint:
-    health:
-      probes:
-        enabled: true
-      show-details: always
