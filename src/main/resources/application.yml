@@ -8,4 +8,4 @@ renderer:
     # (5000req/hour vs. the default 60req/hour without a token). When running the app
     # locally, this lower default is fine. When running the app in production, the
     # token is a must. See http://developer.github.com/v3/#rate-limiting.
-    token: ${renderer-github-token}
+    token: ${renderer-github-token:}
