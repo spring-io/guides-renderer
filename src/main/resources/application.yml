@@ -9,3 +9,7 @@ renderer:
     # locally, this lower default is fine. When running the app in production, the
     # token is a must. See http://developer.github.com/v3/#rate-limiting.
     token: ${renderer-github-token:}
+spring:
+  security:
+    user:
+      password: ${spring-security-user-password:}
