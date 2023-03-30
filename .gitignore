@@ -52,4 +52,5 @@ jspm_packages/
 npm-debug.log
 .cram/
 
-
+### Secrets ###
+secret.properties
