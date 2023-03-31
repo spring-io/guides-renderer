@@ -1,3 +1,4 @@
+spring.config.import: optional:secret.properties
 renderer:
   github:
     organization: spring-guides
@@ -9,6 +10,11 @@ renderer:
     # locally, this lower default is fine. When running the app in production, the
     # token is a must. See http://developer.github.com/v3/#rate-limiting.
     token: ${renderer-github-token:}
+    webhook:
+      secret: ${renderer-github-webhook-secret:changeme}
+      action-org: ${renderer-github-webhook-action-org:}
+      action-repo: ${renderer-github-webhook-action-repo:}
+      dispatch-token: ${renderer-github-webhook-dispatch-token:}
 spring:
   security:
     user:

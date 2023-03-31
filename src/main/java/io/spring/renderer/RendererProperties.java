@@ -43,6 +43,13 @@ public class RendererProperties {
 		@Pattern(regexp = "([0-9a-zA-Z_]*)?")
 		private String token;
 
+		/**
+		 * Name of the Github organization to fetch guides from.
+		 */
+		private String organization = "spring-guides";
+
+		private Webhook webhook = new Webhook();
+
 		public String getToken() {
 			return this.token;
 		}
@@ -51,17 +58,72 @@ public class RendererProperties {
 			this.token = token;
 		}
 
-		/**
-		 * Name of the Github organization to fetch guides from.
-		 */
-		private String organization = "spring-guides";
-
 		public String getOrganization() {
 			return this.organization;
 		}
 
 		public void setOrganization(String organization) {
 			this.organization = organization;
+		}
+
+		public Webhook getWebhook() {
+			return this.webhook;
+		}
+
+	}
+
+	public static class Webhook {
+
+		/**
+		 * Token configured in GitHub webhooks for this application.
+		 */
+		private String secret = "changeme";
+
+		/**
+		 * Org name for dispatching Github Action.
+		 */
+		private String actionOrg;
+
+		/**
+		 * Repository name for dispatching Github Action.
+		 */
+		private String actionRepo;
+
+		/**
+		 * Token with repo scope for for dispatching Github Action.
+		 */
+		private String dispatchToken;
+
+		public String getSecret() {
+			return this.secret;
+		}
+
+		public void setSecret(String secret) {
+			this.secret = secret;
+		}
+
+		public String getActionOrg() {
+			return this.actionOrg;
+		}
+
+		public void setActionOrg(String actionOrg) {
+			this.actionOrg = actionOrg;
+		}
+
+		public String getActionRepo() {
+			return this.actionRepo;
+		}
+
+		public void setActionRepo(String actionRepo) {
+			this.actionRepo = actionRepo;
+		}
+
+		public String getDispatchToken() {
+			return this.dispatchToken;
+		}
+
+		public void setDispatchToken(String dispatchToken) {
+			this.dispatchToken = dispatchToken;
 		}
 
 	}
