@@ -16,6 +16,9 @@
 
 package io.spring.renderer;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.validation.constraints.Pattern;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -30,8 +33,17 @@ public class RendererProperties {
 
 	private final Github github = new Github();
 
+	/**
+	 * Mappings from guide names to correspoding spring academy urls.
+	 */
+	private final Map<String, String> academy = new HashMap<>();
+
 	public Github getGithub() {
 		return this.github;
+	}
+
+	public Map<String, String> getAcademy() {
+		return this.academy;
 	}
 
 	public static class Github {

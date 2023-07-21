@@ -64,11 +64,12 @@ public class GuidesController {
 
 	@GetMapping("")
 	public CollectionModel<GuideModel> listGuides() {
-		List<GuideModel> guideModels = this.guideAssembler
-				.toCollectionModel(
-						this.githubClient.fetchOrgRepositories(this.properties.getGithub().getOrganization()))
-				.getContent().stream().filter(guide -> !guide.getType().equals(GuideType.UNKNOWN))
-				.collect(Collectors.toList());
+		List<Repository> repositories = this.githubClient
+				.fetchOrgRepositories(this.properties.getGithub().getOrganization());
+		List<GuideMetadata> guideMetadataList = repositories.stream()
+				.map((repository) -> new GuideMetadata(repository, getAcademyUrl(repository))).toList();
+		List<GuideModel> guideModels = this.guideAssembler.toCollectionModel(guideMetadataList).getContent().stream()
+				.filter(guide -> !guide.getType().equals(GuideType.UNKNOWN)).collect(Collectors.toList());
 		CollectionModel<GuideModel> resources = CollectionModel.of(guideModels);
 		for (GuideType type : GuideType.values()) {
 			if (!GuideType.UNKNOWN.equals(type)) {
@@ -79,6 +80,10 @@ public class GuidesController {
 		return resources;
 	}
 
+	private String getAcademyUrl(Repository repository) {
+		return this.properties.getAcademy().get(repository.getName());
+	}
+
 	@GetMapping("/{type}/{guide}")
 	public ResponseEntity<GuideModel> showGuide(@PathVariable String type, @PathVariable String guide) {
 		GuideType guideType = GuideType.fromSlug(type);
@@ -87,7 +92,9 @@ public class GuidesController {
 		}
 		Repository repository = this.githubClient.fetchOrgRepository(this.properties.getGithub().getOrganization(),
 				guideType.getPrefix() + guide);
-		GuideModel guideModel = this.guideAssembler.toModel(repository);
+		String academyUrl = this.properties.getAcademy().get(repository.getName());
+		GuideMetadata guideMetadata = new GuideMetadata(repository, academyUrl);
+		GuideModel guideModel = this.guideAssembler.toModel(guideMetadata);
 		if (guideModel.getType().equals(GuideType.UNKNOWN)) {
 			return ResponseEntity.notFound().build();
 		}

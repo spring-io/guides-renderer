@@ -23,15 +23,15 @@ import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSuppor
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
-class GuideModelAssembler extends RepresentationModelAssemblerSupport<Repository, GuideModel> {
+class GuideModelAssembler extends RepresentationModelAssemblerSupport<GuideMetadata, GuideModel> {
 
 	GuideModelAssembler() {
 		super(GuidesController.class, GuideModel.class);
 	}
 
 	@Override
-	public GuideModel toModel(Repository repository) {
-		GuideModel resource = new GuideModel(repository);
+	public GuideModel toModel(GuideMetadata guideMetadata) {
+		GuideModel resource = new GuideModel(guideMetadata);
 		resource.add(
 				linkTo(methodOn(GuidesController.class).showGuide(resource.getType().getSlug(), resource.getName()))
 						.withSelfRel());

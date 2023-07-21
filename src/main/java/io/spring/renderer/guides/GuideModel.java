@@ -48,7 +48,10 @@ class GuideModel extends RepresentationModel<GuideModel> {
 
 	private String[] projects;
 
-	GuideModel(Repository repository) {
+	private String academyUrl;
+
+	GuideModel(GuideMetadata guideMetadata) {
+		Repository repository = guideMetadata.getRepository();
 		this.type = GuideType.fromRepositoryName(repository.getName());
 		this.name = this.type.stripPrefix(repository.getName());
 		this.repositoryName = repository.getFullName();
@@ -72,6 +75,7 @@ class GuideModel extends RepresentationModel<GuideModel> {
 		else {
 			this.projects = new String[0];
 		}
+		this.academyUrl = guideMetadata.getAcademyUrl();
 	}
 
 	public String getName() {
@@ -112,6 +116,10 @@ class GuideModel extends RepresentationModel<GuideModel> {
 
 	public String[] getProjects() {
 		return this.projects;
+	}
+
+	public String getAcademyUrl() {
+		return this.academyUrl;
 	}
 
 }

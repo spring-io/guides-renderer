@@ -19,9 +19,9 @@ package io.spring.renderer.guides;
 import java.util.Arrays;
 
 import io.spring.renderer.github.GithubClient;
+import io.spring.renderer.github.GithubResourceNotFoundException;
 import io.spring.renderer.github.Repository;
 import org.junit.jupiter.api.Test;
-import io.spring.renderer.github.GithubResourceNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -45,7 +45,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Tests for {@link GuidesController}
  */
-@WebMvcTest(GuidesController.class)
+@WebMvcTest(controllers = GuidesController.class, properties = "renderer.academy.gs-rest-service: http://test.com")
 @WithMockUser
 public class GuidesControllerTests {
 
@@ -77,10 +77,12 @@ public class GuidesControllerTests {
 
 		this.mvc.perform(get("/guides/")).andExpect(status().isOk())
 				.andExpect(jsonPath("$._embedded.guides[0].name").value("rest-service"))
+				.andExpect(jsonPath("$._embedded.guides[0].academyUrl").value("http://test.com"))
 				.andExpect(jsonPath("$._embedded.guides[0].projects[0]").value("spring-boot"))
 				.andExpect(hasLink("$._embedded.guides[0]._links", "self",
 						"http://localhost/guides/getting-started/rest-service"))
 				.andExpect(jsonPath("$._embedded.guides[1].name").value("securing-web"))
+				.andExpect(jsonPath("$._embedded.guides[1].academyUrl").isEmpty())
 				.andExpect(jsonPath("$._embedded.guides[1].projects").isEmpty())
 				.andExpect(hasLink("$._embedded.guides[1]._links", "self",
 						"http://localhost/guides/getting-started/securing-web"));
@@ -122,6 +124,7 @@ public class GuidesControllerTests {
 				.andExpect(jsonPath("$.gitUrl").value("git://example.org/spring-guides/gs-rest-service.git"))
 				.andExpect(jsonPath("$.sshUrl").value("git@example.org:spring-guides/gs-rest-service.git"))
 				.andExpect(jsonPath("$.cloneUrl").value("https://example.org/spring-guides/gs-rest-service.git"))
+				.andExpect(jsonPath("$.academyUrl").value("http://test.com"))
 				.andExpect(jsonPath("$.projects[0]").value("spring-boot"))
 				.andExpect(hasLink("self", "http://localhost/guides/getting-started/rest-service"));
 	}
