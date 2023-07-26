@@ -15,9 +15,9 @@ renderer:
       action-org: ${renderer-github-webhook-action-org:}
       action-repo: ${renderer-github-webhook-action-repo:}
       dispatch-token: ${renderer-github-webhook-dispatch-token:}
-    academy:
-      gs-accessing-data-jpa: https://spring.academy/guides/accessing-data-jpa
-      gs-rest-service: https://spring.academy/guides/rest-service
+  academy:
+    gs-accessing-data-jpa: https://spring.academy/guides/accessing-data-jpa
+    gs-rest-service: https://spring.academy/guides/rest-service
 spring:
   security:
     user:
