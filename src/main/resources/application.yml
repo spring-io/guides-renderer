@@ -18,6 +18,8 @@ renderer:
   academy:
     gs-accessing-data-jpa: https://spring.academy/guides/accessing-data-jpa
     gs-rest-service: https://spring.academy/guides/rest-service
+    gs-spring-boot: https://spring.academy/guides/building-an-application-with-spring-boot
+    gs-messaging-rabbitmq: https://spring.academy/guides/messaging-with-rabbitmq
 spring:
   security:
     user:
