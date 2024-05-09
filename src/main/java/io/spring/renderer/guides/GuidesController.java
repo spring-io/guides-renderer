@@ -65,16 +65,20 @@ public class GuidesController {
 	@GetMapping("")
 	public CollectionModel<GuideModel> listGuides() {
 		List<Repository> repositories = this.githubClient
-				.fetchOrgRepositories(this.properties.getGithub().getOrganization());
+			.fetchOrgRepositories(this.properties.getGithub().getOrganization());
 		List<GuideMetadata> guideMetadataList = repositories.stream()
-				.map((repository) -> new GuideMetadata(repository, getAcademyUrl(repository))).toList();
-		List<GuideModel> guideModels = this.guideAssembler.toCollectionModel(guideMetadataList).getContent().stream()
-				.filter(guide -> !guide.getType().equals(GuideType.UNKNOWN)).collect(Collectors.toList());
+			.map((repository) -> new GuideMetadata(repository, getAcademyUrl(repository)))
+			.toList();
+		List<GuideModel> guideModels = this.guideAssembler.toCollectionModel(guideMetadataList)
+			.getContent()
+			.stream()
+			.filter(guide -> !guide.getType().equals(GuideType.UNKNOWN))
+			.collect(Collectors.toList());
 		CollectionModel<GuideModel> resources = CollectionModel.of(guideModels);
 		for (GuideType type : GuideType.values()) {
 			if (!GuideType.UNKNOWN.equals(type)) {
 				resources.add(linkTo(methodOn(GuidesController.class).showGuide(type.getSlug(), null))
-						.withRel(type.getSlug()));
+					.withRel(type.getSlug()));
 			}
 		}
 		return resources;
@@ -109,9 +113,9 @@ public class GuidesController {
 		}
 		GuideContentModel guideContentModel = this.guideRenderer.render(guideType, guide);
 		guideContentModel
-				.add(linkTo(methodOn(GuidesController.class).renderGuide(guideType.getSlug(), guide)).withSelfRel());
+			.add(linkTo(methodOn(GuidesController.class).renderGuide(guideType.getSlug(), guide)).withSelfRel());
 		guideContentModel
-				.add(linkTo(methodOn(GuidesController.class).showGuide(guideType.getSlug(), guide)).withRel("guide"));
+			.add(linkTo(methodOn(GuidesController.class).showGuide(guideType.getSlug(), guide)).withRel("guide"));
 		return ResponseEntity.ok(guideContentModel);
 	}
 

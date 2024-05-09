@@ -54,8 +54,12 @@ public class AsciidoctorGuideContentContributor implements GuideContentContribut
 		try {
 			Attributes attributes = Attributes.builder().allowUriRead(true).skipFrontMatter(true).build();
 			File readmeAdocFile = new File(repositoryRoot.getAbsolutePath() + File.separator + README_FILENAME);
-			Options options = Options.builder().safe(SafeMode.SAFE).baseDir(repositoryRoot).headerFooter(true)
-					.attributes(attributes).build();
+			Options options = Options.builder()
+				.safe(SafeMode.SAFE)
+				.baseDir(repositoryRoot)
+				.headerFooter(true)
+				.attributes(attributes)
+				.build();
 			StringWriter writer = new StringWriter();
 			this.asciidoctor.convert(new FileReader(readmeAdocFile), writer, options);
 			Document doc = Jsoup.parse(writer.toString());
@@ -75,10 +79,15 @@ public class AsciidoctorGuideContentContributor implements GuideContentContribut
 	private String findTableOfContents(Document doc) {
 		Elements toc = doc.select("div#toc > ul.sectlevel1");
 		toc.select("ul.sectlevel2").forEach(Node::remove);
-		toc.forEach(part -> part
-				.select("a[href]").stream().filter(anchor -> doc.select(anchor.attr("href")).get(0).parent()
-						.classNames().stream().anyMatch(clazz -> clazz.startsWith("reveal")))
-				.forEach(href -> href.parent().remove()));
+		toc.forEach(part -> part.select("a[href]")
+			.stream()
+			.filter(anchor -> doc.select(anchor.attr("href"))
+				.get(0)
+				.parent()
+				.classNames()
+				.stream()
+				.anyMatch(clazz -> clazz.startsWith("reveal")))
+			.forEach(href -> href.parent().remove()));
 		return toc.toString();
 	}
 

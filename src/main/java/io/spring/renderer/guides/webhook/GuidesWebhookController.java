@@ -25,10 +25,10 @@ import java.util.Map;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.spring.renderer.RendererProperties;
+import jakarta.xml.bind.DatatypeConverter;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 

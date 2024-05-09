@@ -53,48 +53,65 @@ class GuidesWebhookControllerTests {
 
 	@Test
 	void missingHeadersShouldBeRejected() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.post("/webhook/guides").accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON).content("{\"message\": \"this is a test\""))
-				.andExpect(MockMvcResultMatchers.status().isBadRequest());
+		mockMvc
+			.perform(MockMvcRequestBuilders.post("/webhook/guides")
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"message\": \"this is a test\""))
+			.andExpect(MockMvcResultMatchers.status().isBadRequest());
 	}
 
 	@Test
 	void invalidHmacSignatureShouldBeRejected() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.post("/webhook/guides").accept(MediaType.APPLICATION_JSON)
-				.contentType(MediaType.APPLICATION_JSON).header("X-Hub-Signature", "sha1=wronghmacvalue")
-				.header("X-GitHub-Event", "push").content("{\"message\": \"this is a test\""))
-				.andExpect(MockMvcResultMatchers.status().isForbidden())
-				.andExpect(MockMvcResultMatchers.content().string("{ \"message\": \"Forbidden\" }"));
+		mockMvc
+			.perform(MockMvcRequestBuilders.post("/webhook/guides")
+				.accept(MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.header("X-Hub-Signature", "sha1=wronghmacvalue")
+				.header("X-GitHub-Event", "push")
+				.content("{\"message\": \"this is a test\""))
+			.andExpect(MockMvcResultMatchers.status().isForbidden())
+			.andExpect(MockMvcResultMatchers.content().string("{ \"message\": \"Forbidden\" }"));
 	}
 
 	@Test
 	void pingEventShouldHaveResponse() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.post("/webhook/guides").accept(MediaType.APPLICATION_JSON)
+		mockMvc
+			.perform(MockMvcRequestBuilders.post("/webhook/guides")
+				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
 				.header("X-Hub-Signature", "sha1=9BBB4C351EF0D50F93372CA787F338385981AA41")
-				.header("X-GitHub-Event", "ping").content(getTestPayload("ping")))
-				.andExpect(MockMvcResultMatchers.status().isOk()).andExpect(MockMvcResultMatchers.content()
-						.string("{ \"message\": \"Successfully processed ping event\" }"));
+				.header("X-GitHub-Event", "ping")
+				.content(getTestPayload("ping")))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(
+					MockMvcResultMatchers.content().string("{ \"message\": \"Successfully processed ping event\" }"));
 	}
 
 	@Test
 	void invalidJsonPushEventShouldBeRejected() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.post("/webhook/guides").accept(MediaType.APPLICATION_JSON)
+		mockMvc
+			.perform(MockMvcRequestBuilders.post("/webhook/guides")
+				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
 				.header("X-Hub-Signature", "sha1=8FCA101BFF427372C4DB6B9B6E48C8E2D2092ADC")
-				.header("X-GitHub-Event", "push").content("this is a test message"))
-				.andExpect(MockMvcResultMatchers.status().isBadRequest())
-				.andExpect(MockMvcResultMatchers.content().string("{ \"message\": \"Bad Request\" }"));
+				.header("X-GitHub-Event", "push")
+				.content("this is a test message"))
+			.andExpect(MockMvcResultMatchers.status().isBadRequest())
+			.andExpect(MockMvcResultMatchers.content().string("{ \"message\": \"Bad Request\" }"));
 	}
 
 	@Test
 	void shouldTriggerRepositoryDispatch() throws Exception {
-		mockMvc.perform(MockMvcRequestBuilders.post("/webhook/guides").accept(MediaType.APPLICATION_JSON)
+		mockMvc
+			.perform(MockMvcRequestBuilders.post("/webhook/guides")
+				.accept(MediaType.APPLICATION_JSON)
 				.contentType(MediaType.APPLICATION_JSON)
 				.header("X-Hub-Signature", "sha1=C8D5B1C972E8DCFB69AB7124678D4C91E11D6F23")
-				.header("X-GitHub-Event", "push").content(getTestPayload("push")))
-				.andExpect(MockMvcResultMatchers.status().isOk()).andExpect(
-						MockMvcResultMatchers.content().string("{ \"message\": \"Successfully processed update\" }"));
+				.header("X-GitHub-Event", "push")
+				.content(getTestPayload("push")))
+			.andExpect(MockMvcResultMatchers.status().isOk())
+			.andExpect(MockMvcResultMatchers.content().string("{ \"message\": \"Successfully processed update\" }"));
 		verify(this.service, times(1)).triggerRespositoryDispatch("test-org", "test-repo", "dispatch-token");
 	}
 

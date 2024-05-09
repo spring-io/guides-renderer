@@ -38,13 +38,17 @@ enum GuideType {
 	}
 
 	public static GuideType fromSlug(String slug) {
-		return Arrays.stream(GuideType.values()).filter(type -> type.getSlug().equals(slug)).findFirst()
-				.orElse(GuideType.UNKNOWN);
+		return Arrays.stream(GuideType.values())
+			.filter(type -> type.getSlug().equals(slug))
+			.findFirst()
+			.orElse(GuideType.UNKNOWN);
 	}
 
 	public static GuideType fromRepositoryName(String repositoryName) {
-		return Arrays.stream(GuideType.values()).filter(type -> repositoryName.startsWith(type.getPrefix())).findFirst()
-				.orElse(GuideType.UNKNOWN);
+		return Arrays.stream(GuideType.values())
+			.filter(type -> repositoryName.startsWith(type.getPrefix()))
+			.findFirst()
+			.orElse(GuideType.UNKNOWN);
 	}
 
 	public String stripPrefix(String repositoryName) {

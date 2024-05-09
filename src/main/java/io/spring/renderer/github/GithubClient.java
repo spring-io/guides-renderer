@@ -64,16 +64,17 @@ public class GithubClient {
 	private static final String REPO_ZIPBALL_PATH = REPO_INFO_PATH + "/zipball";
 
 	private static final MediaType GITHUB_PREVIEW_TYPE = MediaType
-			.parseMediaType("application/vnd.github.mercy-preview+json");
+		.parseMediaType("application/vnd.github.mercy-preview+json");
 
 	private final RestTemplate restTemplate;
 
 	public GithubClient(RestTemplateBuilder restTemplateBuilder, RendererProperties properties) {
 		restTemplateBuilder = restTemplateBuilder.rootUri(API_URL_BASE)
-				.additionalInterceptors(new GithubAcceptInterceptor());
+			.additionalInterceptors(new GithubAcceptInterceptor());
 		if (StringUtils.hasText(properties.getGithub().getToken())) {
 			this.restTemplate = restTemplateBuilder
-					.additionalInterceptors(new GithubAppTokenInterceptor(properties.getGithub().getToken())).build();
+				.additionalInterceptors(new GithubAppTokenInterceptor(properties.getGithub().getToken()))
+				.build();
 		}
 		else {
 			this.logger.warn("GitHub API access will be rate-limited at 60 req/hour");
@@ -138,8 +139,11 @@ public class GithubClient {
 		if (links == null) {
 			return Optional.empty();
 		}
-		return links.stream().map(NEXT_LINK_PATTERN::matcher).filter(Matcher::matches).map(matcher -> matcher.group(1))
-				.findFirst();
+		return links.stream()
+			.map(NEXT_LINK_PATTERN::matcher)
+			.filter(Matcher::matches)
+			.map(matcher -> matcher.group(1))
+			.findFirst();
 	}
 
 	public RateLimit fetchRateLimitInfo() {

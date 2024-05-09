@@ -52,13 +52,13 @@ public class GuideRendererTests {
 	@Test
 	public void renderAsciidoctorContent() throws Exception {
 		given(this.githubClient.downloadRepositoryAsZipball("spring-guides", "gs-sample"))
-				.willReturn(readAsBytes("gs-sample.zip"));
+			.willReturn(readAsBytes("gs-sample.zip"));
 		GuideContentModel result = this.renderer.render(GuideType.GETTING_STARTED, "sample");
 		assertThat(result.getName()).isEqualTo("sample");
 		assertThat(result.getContent()).contains("<p>This is a sample guide.</p>")
-				.contains("<!-- rendered by Sagan Renderer Service -->");
+			.contains("<!-- rendered by Sagan Renderer Service -->");
 		assertThat(result.getTableOfContents())
-				.contains("<li><a href=\"#_sample_guide_title\">Sample Guide title</a></li>");
+			.contains("<li><a href=\"#_sample_guide_title\">Sample Guide title</a></li>");
 	}
 
 	private byte[] readAsBytes(String path) throws IOException {

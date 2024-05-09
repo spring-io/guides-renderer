@@ -3,13 +3,13 @@ buildscript {
 		mavenCentral()
 	}
 	dependencies {
-		classpath("io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.35")
+		classpath("io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.41")
 	}
 }
 
 plugins {
-	id 'org.springframework.boot' version '2.7.8'
-	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'org.springframework.boot' version '3.2.5'
+	id 'io.spring.dependency-management' version '1.1.4'
 	id 'java'
 }
 
@@ -29,12 +29,11 @@ bootJar {
 }
 
 dependencies {
-	implementation 'org.pegdown:pegdown:1.6.0'
-	implementation('org.asciidoctor:asciidoctorj:2.5.7') {
+	implementation('org.asciidoctor:asciidoctorj:2.5.12') {
 		exclude group: 'org.jruby'
 	}
-	implementation 'org.jruby:jruby-complete:9.4.0.0'
-	implementation 'org.jsoup:jsoup:1.15.3'
+	implementation 'org.jruby:jruby-complete:9.4.6.0'
+	implementation 'org.jsoup:jsoup:1.17.1'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
@@ -42,7 +41,7 @@ dependencies {
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'com.azure.spring:spring-cloud-azure-starter-keyvault-secrets'
-	implementation 'javax.xml.bind:jaxb-api:2.1'
+	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
@@ -50,7 +49,7 @@ dependencies {
 
 dependencyManagement {
 	imports {
-		mavenBom "com.azure.spring:spring-cloud-azure-dependencies:4.5.0"
+		mavenBom "com.azure.spring:spring-cloud-azure-dependencies:5.11.0"
 	}
 }
 

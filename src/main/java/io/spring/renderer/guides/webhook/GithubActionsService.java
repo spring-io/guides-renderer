@@ -43,8 +43,9 @@ class GithubActionsService {
 
 	void triggerRespositoryDispatch(String org, String repo, String token) {
 		RequestEntity<String> entity = RequestEntity.post(DISPATCH_PATH_TEMPLATE, org, repo)
-				.header("Authorization", "Bearer " + token).header("Accept", ACCEPT_HEADER)
-				.body("{\"event_type\": \"guides\"}");
+			.header("Authorization", "Bearer " + token)
+			.header("Accept", ACCEPT_HEADER)
+			.body("{\"event_type\": \"guides\"}");
 		try {
 			this.restTemplate.exchange(entity, Void.class);
 		}

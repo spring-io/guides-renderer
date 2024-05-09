@@ -62,20 +62,24 @@ class GithubActionsServiceTests {
 
 	@Test
 	void triggerRepositoryDispatchWhenSuccessful() {
-		this.server.expect(requestTo(DISPATCH_PATH)).andExpect(header("Authorization", "Bearer token"))
-				.andExpect(header("Accept", "application/vnd.github+json"))
-				.andExpect(content().json("{\"event_type\": \"guides\"}")).andRespond(withNoContent());
+		this.server.expect(requestTo(DISPATCH_PATH))
+			.andExpect(header("Authorization", "Bearer token"))
+			.andExpect(header("Accept", "application/vnd.github+json"))
+			.andExpect(content().json("{\"event_type\": \"guides\"}"))
+			.andRespond(withNoContent());
 		this.service.triggerRespositoryDispatch(ORG_NAME, REPO_NAME, TOKEN);
 		this.server.verify();
 	}
 
 	@Test
 	void triggerRepositoryDispatchWhenUnsuccessful() {
-		this.server.expect(requestTo(DISPATCH_PATH)).andExpect(header("Authorization", "Bearer token"))
-				.andExpect(header("Accept", "application/vnd.github+json"))
-				.andExpect(content().json("{\"event_type\": \"guides\"}")).andRespond(withStatus(HttpStatus.NOT_FOUND));
+		this.server.expect(requestTo(DISPATCH_PATH))
+			.andExpect(header("Authorization", "Bearer token"))
+			.andExpect(header("Accept", "application/vnd.github+json"))
+			.andExpect(content().json("{\"event_type\": \"guides\"}"))
+			.andRespond(withStatus(HttpStatus.NOT_FOUND));
 		Assertions.assertThatExceptionOfType(RepositoryDispatchFailedException.class)
-				.isThrownBy(() -> this.service.triggerRespositoryDispatch(ORG_NAME, REPO_NAME, TOKEN));
+			.isThrownBy(() -> this.service.triggerRespositoryDispatch(ORG_NAME, REPO_NAME, TOKEN));
 		this.server.verify();
 	}
 

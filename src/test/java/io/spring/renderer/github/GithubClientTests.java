@@ -45,7 +45,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 public class GithubClientTests {
 
 	private static final MediaType GITHUB_PREVIEW = MediaType
-			.parseMediaType("application/vnd.github.mercy-preview+json");
+		.parseMediaType("application/vnd.github.mercy-preview+json");
 
 	private static final MediaType APPLICATION_ZIP = MediaType.parseMediaType("application/zip");
 
@@ -61,9 +61,10 @@ public class GithubClientTests {
 		String repo = "gs-rest-service";
 		String expectedUrl = String.format("/repos/%s/%s", org, repo);
 		String authorization = getAuthorizationHeader();
-		this.server.expect(requestTo(expectedUrl)).andExpect(header(HttpHeaders.AUTHORIZATION, authorization))
-				.andExpect(header(HttpHeaders.ACCEPT, GITHUB_PREVIEW.toString()))
-				.andRespond(withSuccess(getClassPathResource("gs-rest-service.json"), GITHUB_PREVIEW));
+		this.server.expect(requestTo(expectedUrl))
+			.andExpect(header(HttpHeaders.AUTHORIZATION, authorization))
+			.andExpect(header(HttpHeaders.ACCEPT, GITHUB_PREVIEW.toString()))
+			.andRespond(withSuccess(getClassPathResource("gs-rest-service.json"), GITHUB_PREVIEW));
 		Repository repository = this.client.fetchOrgRepository(org, repo);
 		assertThat(repository).extracting("name").isEqualTo("gs-rest-service");
 	}
@@ -74,13 +75,15 @@ public class GithubClientTests {
 		String repo = "gs-redirected";
 		String expectedUrl = String.format("/repos/%s/%s", org, repo);
 		String authorization = getAuthorizationHeader();
-		this.server.expect(requestTo(expectedUrl)).andExpect(header(HttpHeaders.AUTHORIZATION, authorization))
-				.andExpect(header(HttpHeaders.ACCEPT, GITHUB_PREVIEW.toString()))
-				.andRespond(withSuccess(getClassPathResource("gs-rest-service.json"), GITHUB_PREVIEW));
+		this.server.expect(requestTo(expectedUrl))
+			.andExpect(header(HttpHeaders.AUTHORIZATION, authorization))
+			.andExpect(header(HttpHeaders.ACCEPT, GITHUB_PREVIEW.toString()))
+			.andRespond(withSuccess(getClassPathResource("gs-rest-service.json"), GITHUB_PREVIEW));
 		assertThatThrownBy(() -> this.client.fetchOrgRepository(org, repo))
-				.isInstanceOf(GithubResourceNotFoundException.class)
-				.hasMessage("Could not find github repository [spring-guides/gs-redirected]").getCause()
-				.hasMessage("Repository [gs-redirected] redirected to [spring-guides/gs-rest-service]");
+			.isInstanceOf(GithubResourceNotFoundException.class)
+			.hasMessage("Could not find github repository [spring-guides/gs-redirected]")
+			.getCause()
+			.hasMessage("Repository [gs-redirected] redirected to [spring-guides/gs-rest-service]");
 	}
 
 	@Test
@@ -89,9 +92,10 @@ public class GithubClientTests {
 		String repo = "gs-rest-service";
 		String expectedUrl = String.format("/repos/%s/%s/zipball", org, repo);
 		String authorization = getAuthorizationHeader();
-		this.server.expect(requestTo(expectedUrl)).andExpect(header(HttpHeaders.AUTHORIZATION, authorization))
-				.andExpect(header(HttpHeaders.ACCEPT, GITHUB_PREVIEW.toString()))
-				.andRespond(withSuccess(getClassPathResource("gs-rest-service.zip"), APPLICATION_ZIP));
+		this.server.expect(requestTo(expectedUrl))
+			.andExpect(header(HttpHeaders.AUTHORIZATION, authorization))
+			.andExpect(header(HttpHeaders.ACCEPT, GITHUB_PREVIEW.toString()))
+			.andRespond(withSuccess(getClassPathResource("gs-rest-service.zip"), APPLICATION_ZIP));
 		byte[] result = this.client.downloadRepositoryAsZipball(org, repo);
 		ClassPathResource resource = getClassPathResource("gs-rest-service.zip");
 		assertThat(result).isEqualTo(StreamUtils.copyToByteArray(resource.getInputStream()));
@@ -106,28 +110,32 @@ public class GithubClientTests {
 				"<https://api.github.com/organizations/4161866/repos?per_page=100&page=2>; rel=\"next\","
 						+ " <https://api.github.com/organizations/4161866/repos?per_page=100&page=2>; rel=\"last\"");
 		this.server.expect(requestTo("/orgs/spring-guides/repos?per_page=100"))
-				.andExpect(header(HttpHeaders.AUTHORIZATION, authorization))
-				.andExpect(header(HttpHeaders.ACCEPT, GITHUB_PREVIEW.toString())).andRespond(
-						withSuccess(getClassPathResource("spring-guides-repos-page1.json"), MediaType.APPLICATION_JSON)
-								.headers(firstPageHeaders));
+			.andExpect(header(HttpHeaders.AUTHORIZATION, authorization))
+			.andExpect(header(HttpHeaders.ACCEPT, GITHUB_PREVIEW.toString()))
+			.andRespond(withSuccess(getClassPathResource("spring-guides-repos-page1.json"), MediaType.APPLICATION_JSON)
+				.headers(firstPageHeaders));
 		this.server.expect(requestTo("/organizations/4161866/repos?per_page=100&page=2"))
-				.andExpect(header(HttpHeaders.AUTHORIZATION, authorization))
-				.andExpect(header(HttpHeaders.ACCEPT, GITHUB_PREVIEW.toString())).andRespond(withSuccess(
-						getClassPathResource("spring-guides-repos-page2.json"), MediaType.APPLICATION_JSON));
+			.andExpect(header(HttpHeaders.AUTHORIZATION, authorization))
+			.andExpect(header(HttpHeaders.ACCEPT, GITHUB_PREVIEW.toString()))
+			.andRespond(
+					withSuccess(getClassPathResource("spring-guides-repos-page2.json"), MediaType.APPLICATION_JSON));
 
 		List<Repository> repositories = this.client.fetchOrgRepositories(org);
-		Assertions.assertThat(repositories).hasSize(5).extracting("name").containsExactlyInAnyOrder("gs-rest-service",
-				"gs-scheduling-tasks", "gs-consuming-rest", "gs-relational-data-access",
-				"deprecate-gs-device-detection");
+		Assertions.assertThat(repositories)
+			.hasSize(5)
+			.extracting("name")
+			.containsExactlyInAnyOrder("gs-rest-service", "gs-scheduling-tasks", "gs-consuming-rest",
+					"gs-relational-data-access", "deprecate-gs-device-detection");
 
 	}
 
 	@Test
 	void fetchRateLimitInformation() {
 		String authorization = getAuthorizationHeader();
-		this.server.expect(requestTo("/rate_limit")).andExpect(header(HttpHeaders.AUTHORIZATION, authorization))
-				.andExpect(header(HttpHeaders.ACCEPT, GITHUB_PREVIEW.toString()))
-				.andRespond(withSuccess(getClassPathResource("rate_limit.json"), MediaType.APPLICATION_JSON));
+		this.server.expect(requestTo("/rate_limit"))
+			.andExpect(header(HttpHeaders.AUTHORIZATION, authorization))
+			.andExpect(header(HttpHeaders.ACCEPT, GITHUB_PREVIEW.toString()))
+			.andRespond(withSuccess(getClassPathResource("rate_limit.json"), MediaType.APPLICATION_JSON));
 
 		RateLimit rateLimit = this.client.fetchRateLimitInfo();
 		assertThat(rateLimit.getLimit()).isEqualTo(60);

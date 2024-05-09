@@ -19,7 +19,7 @@ package io.spring.renderer;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.validation.constraints.Pattern;
+import jakarta.validation.constraints.Pattern;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.validation.annotation.Validated;

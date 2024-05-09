@@ -32,12 +32,12 @@ class GuideModelAssembler extends RepresentationModelAssemblerSupport<GuideMetad
 	@Override
 	public GuideModel toModel(GuideMetadata guideMetadata) {
 		GuideModel resource = new GuideModel(guideMetadata);
-		resource.add(
-				linkTo(methodOn(GuidesController.class).showGuide(resource.getType().getSlug(), resource.getName()))
-						.withSelfRel());
-		resource.add(
-				linkTo(methodOn(GuidesController.class).renderGuide(resource.getType().getSlug(), resource.getName()))
-						.withRel("content"));
+		resource
+			.add(linkTo(methodOn(GuidesController.class).showGuide(resource.getType().getSlug(), resource.getName()))
+				.withSelfRel());
+		resource
+			.add(linkTo(methodOn(GuidesController.class).renderGuide(resource.getType().getSlug(), resource.getName()))
+				.withRel("content"));
 		resource.add(linkTo(methodOn(GuidesController.class).listGuides()).withRel("guides"));
 		return resource;
 	}

@@ -17,6 +17,7 @@ package io.spring.renderer;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
@@ -31,11 +32,11 @@ public class SecurityConfiguration {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http.authorizeHttpRequests((request) -> {
-			request.mvcMatchers("/webhook/guides").permitAll();
+			request.requestMatchers("/webhook/guides").permitAll();
 			request.anyRequest().authenticated();
 		});
-		http.csrf(csrf -> csrf.ignoringAntMatchers("/webhook/**"));
-		http.httpBasic();
+		http.csrf(csrf -> csrf.ignoringRequestMatchers("/webhook/**"));
+		http.httpBasic(Customizer.withDefaults());
 		return http.build();
 	}
 
