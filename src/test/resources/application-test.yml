@@ -1,0 +1,13 @@
+renderer:
+  academy:
+    gs-rest-service-test: http://test.com
+  category:
+    test-1:
+      display-name: Test 1
+      guide:
+        - gs-rest-service-test
+        - gs-securing-web-test
+    test-2:
+      display-name: Test 2
+      guide:
+        - gs-securing-web-test

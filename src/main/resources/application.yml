@@ -1,4 +1,6 @@
-spring.config.import: optional:secret.properties
+spring.config.import:
+  - optional:secret.properties
+  - categories.yml
 renderer:
   github:
     organization: spring-guides
@@ -20,6 +22,7 @@ renderer:
     gs-rest-service: https://spring.academy/guides/rest-service
     gs-spring-boot: https://spring.academy/guides/building-an-application-with-spring-boot
     gs-messaging-rabbitmq: https://spring.academy/guides/messaging-with-rabbitmq
+
 spring:
   security:
     user:

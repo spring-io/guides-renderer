@@ -50,6 +50,8 @@ class GuideModel extends RepresentationModel<GuideModel> {
 
 	private String academyUrl;
 
+	private String[] category;
+
 	GuideModel(GuideMetadata guideMetadata) {
 		Repository repository = guideMetadata.getRepository();
 		this.type = GuideType.fromRepositoryName(repository.getName());
@@ -76,6 +78,7 @@ class GuideModel extends RepresentationModel<GuideModel> {
 			this.projects = new String[0];
 		}
 		this.academyUrl = guideMetadata.getAcademyUrl();
+		this.category = guideMetadata.getCategory().toArray(new String[0]);
 	}
 
 	public String getName() {
@@ -120,6 +123,10 @@ class GuideModel extends RepresentationModel<GuideModel> {
 
 	public String getAcademyUrl() {
 		return this.academyUrl;
+	}
+
+	public String[] getCategory() {
+		return this.category;
 	}
 
 }

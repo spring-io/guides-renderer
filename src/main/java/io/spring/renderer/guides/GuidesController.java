@@ -16,10 +16,14 @@
 
 package io.spring.renderer.guides;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.spring.renderer.RendererProperties;
+import io.spring.renderer.RendererProperties.Webhook.Category;
 import io.spring.renderer.github.GithubClient;
 import io.spring.renderer.github.GithubResourceNotFoundException;
 import io.spring.renderer.github.Repository;
@@ -27,6 +31,7 @@ import io.spring.renderer.github.Repository;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,6 +56,8 @@ public class GuidesController {
 
 	private final GuideModelAssembler guideAssembler = new GuideModelAssembler();
 
+	private Set<String> DEFAULT_CATEGORY = Collections.singleton("Misc");
+
 	public GuidesController(GuideRenderer guideRenderer, GithubClient github, RendererProperties properties) {
 		this.guideRenderer = guideRenderer;
 		this.githubClient = github;
@@ -67,7 +74,7 @@ public class GuidesController {
 		List<Repository> repositories = this.githubClient
 			.fetchOrgRepositories(this.properties.getGithub().getOrganization());
 		List<GuideMetadata> guideMetadataList = repositories.stream()
-			.map((repository) -> new GuideMetadata(repository, getAcademyUrl(repository)))
+			.map((repository) -> new GuideMetadata(repository, getAcademyUrl(repository), getCategory(repository)))
 			.toList();
 		List<GuideModel> guideModels = this.guideAssembler.toCollectionModel(guideMetadataList)
 			.getContent()
@@ -84,6 +91,16 @@ public class GuidesController {
 		return resources;
 	}
 
+	private Set<String> getCategory(Repository repository) {
+		Map<String, Category> category = this.properties.getCategory();
+		Set<String> values = category.values()
+			.stream()
+			.filter((v) -> v.getGuide().contains(repository.getName()))
+			.map(Category::getDisplayName)
+			.collect(Collectors.toSet());
+		return (!CollectionUtils.isEmpty(values)) ? values : DEFAULT_CATEGORY;
+	}
+
 	private String getAcademyUrl(Repository repository) {
 		return this.properties.getAcademy().get(repository.getName());
 	}
@@ -97,7 +114,7 @@ public class GuidesController {
 		Repository repository = this.githubClient.fetchOrgRepository(this.properties.getGithub().getOrganization(),
 				guideType.getPrefix() + guide);
 		String academyUrl = this.properties.getAcademy().get(repository.getName());
-		GuideMetadata guideMetadata = new GuideMetadata(repository, academyUrl);
+		GuideMetadata guideMetadata = new GuideMetadata(repository, academyUrl, getCategory(repository));
 		GuideModel guideModel = this.guideAssembler.toModel(guideMetadata);
 		if (guideModel.getType().equals(GuideType.UNKNOWN)) {
 			return ResponseEntity.notFound().build();

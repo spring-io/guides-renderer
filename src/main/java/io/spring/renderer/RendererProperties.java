@@ -17,8 +17,11 @@
 package io.spring.renderer;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
+import io.spring.renderer.RendererProperties.Webhook.Category;
 import jakarta.validation.constraints.Pattern;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -38,12 +41,18 @@ public class RendererProperties {
 	 */
 	private final Map<String, String> academy = new HashMap<>();
 
+	private final Map<String, Category> category = new HashMap<>();
+
 	public Github getGithub() {
 		return this.github;
 	}
 
 	public Map<String, String> getAcademy() {
 		return this.academy;
+	}
+
+	public Map<String, Category> getCategory() {
+		return this.category;
 	}
 
 	public static class Github {
@@ -136,6 +145,26 @@ public class RendererProperties {
 
 		public void setDispatchToken(String dispatchToken) {
 			this.dispatchToken = dispatchToken;
+		}
+
+		public static class Category {
+
+			private String displayName;
+
+			private final Set<String> guide = new LinkedHashSet<>();
+
+			public String getDisplayName() {
+				return this.displayName;
+			}
+
+			public void setDisplayName(String displayName) {
+				this.displayName = displayName;
+			}
+
+			public Set<String> getGuide() {
+				return this.guide;
+			}
+
 		}
 
 	}

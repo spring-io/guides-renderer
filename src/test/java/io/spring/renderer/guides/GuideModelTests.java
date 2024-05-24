@@ -17,6 +17,7 @@
 package io.spring.renderer.guides;
 
 import java.util.Arrays;
+import java.util.Collections;
 
 import io.spring.renderer.github.Repository;
 import org.junit.jupiter.api.Test;
@@ -35,7 +36,7 @@ public class GuideModelTests {
 				"git://example.org/spring-guides/gs-sample-guide.git",
 				"git@example.org:spring-guides/gs-sample-guide.git",
 				"https://example.org/spring-guides/gs-sample-guide.git", null);
-		GuideMetadata guideMetadata = new GuideMetadata(repository, null);
+		GuideMetadata guideMetadata = new GuideMetadata(repository, null, Collections.singleton("test"));
 		GuideModel guideModel = new GuideModel(guideMetadata);
 		assertThat(guideModel.getName()).isEqualTo("sample-guide");
 		assertThat(guideModel.getRepositoryName()).isEqualTo("spring-guides/gs-sample-guide");
@@ -47,6 +48,7 @@ public class GuideModelTests {
 		assertThat(guideModel.getGitUrl()).isEqualTo("git://example.org/spring-guides/gs-sample-guide.git");
 		assertThat(guideModel.getSshUrl()).isEqualTo("git@example.org:spring-guides/gs-sample-guide.git");
 		assertThat(guideModel.getProjects()).isEmpty();
+		assertThat(guideModel.getCategory()).containsExactly("test");
 	}
 
 	@Test
@@ -56,7 +58,7 @@ public class GuideModelTests {
 				"git://example.org/spring-guides/tut-sample-guide.git",
 				"git@example.org:spring-guides/tut-sample-guide.git",
 				"https://example.org/spring-guides/tut-sample-guide.git", null);
-		GuideMetadata guideMetadata = new GuideMetadata(repository, "http://test.academy");
+		GuideMetadata guideMetadata = new GuideMetadata(repository, "http://test.academy", Collections.emptySet());
 		GuideModel guideModel = new GuideModel(guideMetadata);
 		assertThat(guideModel.getName()).isEqualTo("sample-guide");
 		assertThat(guideModel.getRepositoryName()).isEqualTo("spring-guides/tut-sample-guide");
@@ -75,7 +77,7 @@ public class GuideModelTests {
 				"git@example.org:spring-guides/top-sample-guide.git",
 				"https://example.org/spring-guides/top-sample-guide.git",
 				Arrays.asList("spring-framework", "spring-boot"));
-		GuideMetadata guideMetadata = new GuideMetadata(repository, null);
+		GuideMetadata guideMetadata = new GuideMetadata(repository, null, Collections.emptySet());
 		GuideModel guideModel = new GuideModel(guideMetadata);
 		assertThat(guideModel.getName()).isEqualTo("sample-guide");
 		assertThat(guideModel.getRepositoryName()).isEqualTo("spring-guides/top-sample-guide");
@@ -94,7 +96,7 @@ public class GuideModelTests {
 				"git@example.org:spring-guides/deprecated-gs-sample-guide.git",
 				"https://example.org/spring-guides/deprecated-gs-sample-guide.git",
 				Arrays.asList("spring-framework", "spring-boot"));
-		GuideMetadata guideMetadata = new GuideMetadata(repository, null);
+		GuideMetadata guideMetadata = new GuideMetadata(repository, null, Collections.emptySet());
 		GuideModel guideModel = new GuideModel(guideMetadata);
 		assertThat(guideModel.getName()).isEqualTo("deprecated-gs-sample-guide");
 		assertThat(guideModel.getTitle()).isEqualTo("Title");

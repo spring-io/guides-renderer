@@ -1,0 +1,106 @@
+renderer:
+  category:
+    batch:
+      display-name: Batch Processing
+      guide:
+      - gs-batch-processing
+      - gs-spring-cloud-task
+    caching:
+      display-name: Caching
+      guide:
+      - gs-caching
+    cloud-platform:
+      display-name: Cloud Platform
+      guide:
+      - gs-spring-boot-for-azure
+      - gs-spring-boot-kubernetes
+    data:
+      display-name: Data Access
+      guide:
+      - gs-accessing-data-mysql
+      - gs-accessing-data-jpa
+      - gs-accessing-data-mongodb
+      - gs-relational-data-access
+      - gs-accessing-data-rest
+      - gs-managing-transactions
+      - gs-accessing-data-r2dbc
+      - gs-accessing-mongodb-data-rest
+      - gs-accessing-data-cassandra
+      - gs-spring-data-reactive-redis
+      - gs-accessing-data-neo4j
+      - gs-accessing-data-gemfire
+    io:
+      display-name: IO
+      guide:
+      - gs-uploading-files
+      - gs-async-method
+      - gs-validating-form-input
+      - gs-handling-form-submission
+      - gs-scheduling-tasks
+    messaging:
+      display-name: Messaging
+      guide:
+      - gs-messaging-stomp-websocket
+      - gs-messaging-rabbitmq
+      - gs-messaging-jms
+      - gs-messaging-gcp-pubsub
+      - gs-messaging-gcp-pubsub
+      - gs-integration
+      - gs-spring-cloud-stream
+    microservices:
+      display-name: Microservices
+      guide:
+      - gs-gateway
+      - gs-service-registration-and-discovery
+      - gs-spring-cloud-loadbalancer
+      - gs-cloud-circuit-breaker
+      - gs-centralized-configuration
+    rest:
+      display-name: REST APIs
+      guide:
+      - gs-accessing-neo4j-data-rest
+      - gs-accessing-gemfire-data-rest
+      - gs-rest-hateoas
+      - gs-reactive-rest-service
+      - gs-consuming-rest
+      - gs-rest-service
+      - gs-spring-boot
+    security:
+      display-name: Security
+      guide:
+      - gs-accessing-vault
+      - gs-vault-config
+      - gs-authenticating-ldap
+      - gs-rest-service-cors
+      - gs-securing-web
+    testing:
+      display-name: Testing
+      guide:
+      - gs-contract-rest
+      - gs-testing-web
+    documentation:
+      display-name: Documentation
+      guide:
+      - gs-testing-restdocs
+    web:
+      display-name: Web
+      guide:
+      - gs-serving-web-content
+      - gs-producing-web-service
+      - gs-consuming-web-service
+    packaging:
+      display-name: Packaging
+      guide:
+    ops:
+      display-name: Ops
+      guide:
+      - gs-actuator-service
+    streaming:
+      display-name: Streaming
+      guide:
+      - gs-spring-cloud-dataflow
+    graphql:
+      display-name: GraphQL
+      guide:
+      - gs-graphql-server
+

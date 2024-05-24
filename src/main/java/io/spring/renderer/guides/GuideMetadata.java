@@ -16,6 +16,8 @@
 
 package io.spring.renderer.guides;
 
+import java.util.Set;
+
 import io.spring.renderer.github.Repository;
 
 /**
@@ -29,9 +31,12 @@ class GuideMetadata {
 
 	private final String academyUrl;
 
-	GuideMetadata(Repository repository, String academyUrl) {
+	private final Set<String> category;
+
+	GuideMetadata(Repository repository, String academyUrl, Set<String> category) {
 		this.repository = repository;
 		this.academyUrl = academyUrl;
+		this.category = category;
 	}
 
 	public Repository getRepository() {
@@ -40,6 +45,10 @@ class GuideMetadata {
 
 	public String getAcademyUrl() {
 		return this.academyUrl;
+	}
+
+	public Set<String> getCategory() {
+		return this.category;
 	}
 
 }
