@@ -1,6 +1,7 @@
 spring.config.import:
   - optional:secret.properties
   - categories.yml
+
 renderer:
   github:
     organization: spring-guides
@@ -24,6 +25,13 @@ renderer:
     gs-messaging-rabbitmq: https://spring.academy/guides/messaging-with-rabbitmq
 
 spring:
+  cache:
+    cache-names:
+    - guides
+    - guide
+    - guideContent
+    caffeine:
+      spec: maximumSize=500,expireAfterAccess=30m
   security:
     user:
       password: ${renderer-spring-security-user-password:}

@@ -28,6 +28,7 @@ import io.spring.renderer.github.GithubClient;
 import io.spring.renderer.github.GithubResourceNotFoundException;
 import io.spring.renderer.github.Repository;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
@@ -70,6 +71,7 @@ public class GuidesController {
 	}
 
 	@GetMapping("")
+	@Cacheable("guides")
 	public CollectionModel<GuideModel> listGuides() {
 		List<Repository> repositories = this.githubClient
 			.fetchOrgRepositories(this.properties.getGithub().getOrganization());
@@ -106,6 +108,7 @@ public class GuidesController {
 	}
 
 	@GetMapping("/{type}/{guide}")
+	@Cacheable("guide")
 	public ResponseEntity<GuideModel> showGuide(@PathVariable String type, @PathVariable String guide) {
 		GuideType guideType = GuideType.fromSlug(type);
 		if (GuideType.UNKNOWN.equals(guideType)) {
@@ -123,6 +126,7 @@ public class GuidesController {
 	}
 
 	@GetMapping("/{type}/{guide}/content")
+	@Cacheable("guideContent")
 	public ResponseEntity<GuideContentModel> renderGuide(@PathVariable String type, @PathVariable String guide) {
 		GuideType guideType = GuideType.fromSlug(type);
 		if (GuideType.UNKNOWN.equals(guideType)) {

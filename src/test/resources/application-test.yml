@@ -11,3 +11,7 @@ renderer:
       display-name: Test 2
       guide:
         - gs-securing-web-test
+spring:
+  security:
+    user:
+      password: test
