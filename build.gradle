@@ -32,6 +32,7 @@ dependencies {
 	implementation('org.asciidoctor:asciidoctorj:2.5.12') {
 		exclude group: 'org.jruby'
 	}
+	implementation('io.spring.asciidoctor:spring-asciidoctor-extensions-block-switch:0.6.3')
 	implementation 'org.jruby:jruby-complete:9.4.6.0'
 	implementation 'org.jsoup:jsoup:1.17.1'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
