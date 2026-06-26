@@ -1,23 +1,19 @@
-buildscript {
-	repositories {
-		mavenCentral()
-	}
-	dependencies {
-		classpath("io.spring.javaformat:spring-javaformat-gradle-plugin:0.0.41")
-	}
-}
-
 plugins {
-	id 'org.springframework.boot' version '3.2.5'
-	id 'io.spring.dependency-management' version '1.1.4'
+	id 'org.springframework.boot' version '4.0.6'
+	id 'io.spring.dependency-management' version '1.1.7'
+	id "io.spring.javaformat" version "0.0.47"
 	id 'java'
 }
-
-apply plugin: 'io.spring.javaformat'
 
 group = 'io.spring.renderer'
 version = "1.0.0-SNAPSHOT"
 sourceCompatibility = '17'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
 
 repositories {
 	mavenCentral()
@@ -32,31 +28,39 @@ dependencies {
 	implementation('org.asciidoctor:asciidoctorj:2.5.12') {
 		exclude group: 'org.jruby'
 	}
-	implementation('io.spring.asciidoctor:spring-asciidoctor-extensions-block-switch:0.6.3')
-	implementation 'org.jruby:jruby-complete:9.4.6.0'
-	implementation 'org.jsoup:jsoup:1.17.1'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
-	implementation 'org.springframework.boot:spring-boot-starter-actuator'
-	implementation 'org.springframework.boot:spring-boot-starter-cache'
 	implementation 'com.github.ben-manes.caffeine:caffeine'
 	implementation 'com.azure.spring:spring-cloud-azure-starter-keyvault-secrets'
-	implementation 'jakarta.xml.bind:jakarta.xml.bind-api:4.0.2'
+	implementation('io.spring.asciidoctor:spring-asciidoctor-extensions-block-switch:0.6.3')
+	implementation 'jakarta.xml.bind:jakarta.xml.bind-api'
+	implementation 'org.jruby:jruby-complete:10.1.0.0'
+	implementation 'org.jsoup:jsoup:1.22.2'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-cache'
+	implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+	implementation 'org.springframework.boot:spring-boot-starter-restclient'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.springframework.security:spring-security-test'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-actuator-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-cache-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-hateoas-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-restclient-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-security-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-validation-test'
 }
 
 dependencyManagement {
 	imports {
-		mavenBom "com.azure.spring:spring-cloud-azure-dependencies:5.11.0"
+		mavenBom "com.azure.spring:spring-cloud-azure-dependencies:7.2.0"
 	}
 }
 
 test {
 	useJUnitPlatform()
 }
-

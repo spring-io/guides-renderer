@@ -16,9 +16,8 @@
 
 package io.spring.renderer.guides.webhook;
 
-import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.boot.restclient.RestTemplateBuilder;
 import org.springframework.http.RequestEntity;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -50,7 +49,7 @@ class GithubActionsService {
 			this.restTemplate.exchange(entity, Void.class);
 		}
 		catch (HttpClientErrorException ex) {
-			throw new RepositoryDispatchFailedException(ex.getRawStatusCode());
+			throw new RepositoryDispatchFailedException(ex.getStatusCode().value());
 		}
 
 	}
