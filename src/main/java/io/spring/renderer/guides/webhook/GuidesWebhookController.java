@@ -26,7 +26,8 @@ import java.util.Map;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 import io.spring.renderer.RendererProperties;
 import jakarta.xml.bind.DatatypeConverter;
 import org.apache.commons.logging.Log;
@@ -104,8 +105,8 @@ class GuidesWebhookController {
 		return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{ \"message\": \"Forbidden\" }");
 	}
 
-	@ExceptionHandler(IOException.class)
-	public ResponseEntity<String> handlePayloadParsingException(IOException exception) {
+	@ExceptionHandler({ IOException.class, JacksonException.class })
+	public ResponseEntity<String> handlePayloadParsingException(Exception exception) {
 		logger.error("Payload parsing exception", exception);
 		return ResponseEntity.badRequest().body("{ \"message\": \"Bad Request\" }");
 	}
