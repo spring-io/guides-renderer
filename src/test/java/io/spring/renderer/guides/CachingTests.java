@@ -10,8 +10,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.boot.resttestclient.TestRestTemplate;
+import org.springframework.boot.resttestclient.autoconfigure.AutoConfigureTestRestTemplate;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,7 @@ import static org.mockito.Mockito.verify;
 /**
  * Tests for ensuring that responses from {@link GuidesController} are cached.
  */
+@AutoConfigureTestRestTemplate
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 class CachingTests {
@@ -32,10 +34,10 @@ class CachingTests {
 	@Autowired
 	private TestRestTemplate restTemplate;
 
-	@MockBean
+	@MockitoBean
 	private GuideRenderer guideRenderer;
 
-	@MockBean
+	@MockitoBean
 	private GithubClient githubClient;
 
 	private static final String BASIC_AUTH = "basic " + Base64.getEncoder().encodeToString("user:test".getBytes());

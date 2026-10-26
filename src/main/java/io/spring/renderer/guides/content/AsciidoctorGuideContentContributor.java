@@ -57,7 +57,7 @@ public class AsciidoctorGuideContentContributor implements GuideContentContribut
 			Options options = Options.builder()
 				.safe(SafeMode.SAFE)
 				.baseDir(repositoryRoot)
-				.headerFooter(true)
+				.standalone(true)
 				.attributes(attributes)
 				.build();
 			StringWriter writer = new StringWriter();

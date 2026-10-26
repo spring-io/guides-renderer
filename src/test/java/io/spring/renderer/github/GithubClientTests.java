@@ -23,7 +23,8 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
+import org.springframework.boot.cache.test.autoconfigure.AutoConfigureCache;
+import org.springframework.boot.restclient.test.autoconfigure.RestClientTest;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -40,6 +41,7 @@ import static org.springframework.test.web.client.response.MockRestResponseCreat
 /**
  * Tests for {@link GithubClient}
  */
+@AutoConfigureCache
 @RestClientTest({ GithubClient.class, RendererProperties.class })
 @TestPropertySource(properties = "renderer.github.token=testtoken")
 public class GithubClientTests {

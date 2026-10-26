@@ -26,8 +26,9 @@ import org.hamcrest.core.IsIterableContaining;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.cache.test.autoconfigure.AutoConfigureCache;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -50,6 +51,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 /**
  * Tests for {@link GuidesController}
  */
+@AutoConfigureCache
 @WebMvcTest(controllers = GuidesController.class)
 @ActiveProfiles("test")
 @WithMockUser
@@ -58,10 +60,10 @@ public class GuidesControllerTests {
 	@Autowired
 	private MockMvc mvc;
 
-	@MockBean
+	@MockitoBean
 	private GuideRenderer guideRenderer;
 
-	@MockBean
+	@MockitoBean
 	private GithubClient githubClient;
 
 	@Test
